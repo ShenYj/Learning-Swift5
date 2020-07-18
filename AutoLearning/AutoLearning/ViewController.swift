@@ -54,7 +54,9 @@ class ViewController: NSViewController {
     // 正在学习中的章节名称
     @IBOutlet weak var learningChapterLabel: NSTextField!
     // 章节列表
-    @IBOutlet weak var chaptersTableView: NSTableColumn!
+    @IBOutlet weak var chaptersTableView: NSTableView!
+    
+    
     // 播放按钮
     @IBOutlet weak var playButton: NSButton!
     
@@ -319,7 +321,7 @@ extension ViewController {
                 return
         }
         
-        let string = " ==> 当前章节:[\(String(describing: currentChapter["lesson_name"]))] - lesson_id: \(lesson_id) - course_id:\(course_id) - 本章节时长:\(totalDuration)s "
+        let string = " ==> 当前章节:[\(currentChapter["lesson_name"] ?? "")] - lesson_id: \(lesson_id) - course_id:\(course_id) - 本章节时长:\(totalDuration)s "
         print(string)
         
         self.seconds = 60
@@ -333,6 +335,7 @@ extension ViewController {
     // 初始化一门课程信息, 已学习, 未学习等数据
     func resetNewLessonInfo() {
         
+        self.chaptersTableView.reloadData()
         self.selectChapter = nil
         guard let courseChapterList = self.lessonChaptersList else { return }
         let unLearned = courseChapterList.filter { (element) -> Bool in
@@ -366,7 +369,7 @@ extension ViewController {
     
     // 设置一个未学习章节
     func changeNextChapter() -> Void {
-        
+        self.chaptersTableView.reloadData()
         guard let currWillBeLearned = self.unLearnedLessonChapters.popLast() else {
             print("   >>>>>   设置一个未学习章节: 已经全部学习完  <<<<<   ")
             AudioTool.sharedManager.playSystemSound()
@@ -471,10 +474,32 @@ extension ViewController {
 
 extension ViewController: NSTableViewDataSource {
     
+    func numberOfRows(in tableView: NSTableView) -> Int {
+        return self.lessonChaptersList?.count ?? 0
+    }
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-        guard let chapter = self.lessonChaptersList?[row] else {
-            return nil
+        guard let chapter = self.lessonChaptersList?[row] else { return nil }
+        if tableColumn?.title == "已读" {
+            if let hasLearned = chapter["statistic_status"] as? Int, hasLearned == 1 {
+                return "✔️"
+            }
+            if unLearnedLessonChapters.contains(where: { (element) -> Bool in
+                return (element["lesson_name"] as! String) == (chapter["lesson_name"] as! String)
+            }) {
+                return "❌"
+            }
+            return "✔️"
         }
         return chapter["lesson_name"]
     }
+}
+
+let reusedID = "reusedID"
+
+extension ViewController: NSTableViewDelegate {
+    
+    func tableView(_ tableView: NSTableView, didClick tableColumn: NSTableColumn) {
+        print("\(tableColumn.dataCell)")
+    }
+    
 }
