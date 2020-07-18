@@ -167,13 +167,34 @@ extension NetManager {
     }
     
     // MARK: 获取流媒体地址
-    func chapterVideoPath( course: [String: Any], lessionID: Int, lessionDuration: Int, callback: @escaping ((_ success: Bool) -> Void) ) {
+    func chapterVideoPath( course: [String: Any], lessionID: Int, lessionDuration: Int, callback: @escaping ((_ success: Bool, _ realVideoPath: String?) -> Void) ) {
         let courseID: Int = course["course_id"] as! Int
         
-        guard var request = requestInstance(path: InterfaceLearnRecordReport) else {
-            callback(false)
+        let videoUrl = "\(InterfaceLearnRecordReport)/\(courseID)\(lessionID)"
+        guard let request = requestInstance(path: videoUrl) else {
+            callback(false, nil)
             return
         }
+        
+        let task = URLSession.shared.dataTask(with: request) { ( data, urlRespone, error) in
+            guard let resData = data else {
+                callback(false, nil)
+                return
+            }
+            guard case let res as [String: Any] = try? JSONSerialization.jsonObject(with: resData, options: .mutableContainers) else {
+                callback(false, nil)
+                return;
+            }
+            
+            if let jsonData = res["data"] as? [String: Any],
+                let realPath = jsonData["url"] as? String {
+                print(" 播放地址: \(realPath)")
+                callback(false, realPath)
+                return
+            }
+            callback(false, nil)
+        }
+        task.resume()
     }
 }
 
