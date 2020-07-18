@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import AVKit
 
 class ViewController: NSViewController {
     
@@ -21,7 +22,7 @@ class ViewController: NSViewController {
         return thread
     }()
     
-    private lazy var autoLearnTimer: DispatchSourceTimer = {
+    private lazy var autoLearnTimer: DispatchSourceTimer? = {
         let timer: DispatchSourceTimer = DispatchSource.makeTimerSource(flags: .strict, queue: DispatchQueue.global())
         timer.schedule(deadline: .now(), repeating: requestTimeInterVal)
         timer.setEventHandler { [weak self] in
@@ -75,6 +76,10 @@ class ViewController: NSViewController {
     // 当前章节
     var selectChapter: [String: Any]?
     
+    
+    // Timer Suspend 状态记录
+    private var isSusspended: Bool = true
+    
     // 指定课程下的章节列表
     private var lessonChaptersList: Array<[String: Any]>?
     // 统计当前已阅时长 单位s
@@ -95,6 +100,10 @@ class ViewController: NSViewController {
         // Do any additional setup after loading the view.
         selCourseButton.menu = NSMenu(title: "选择课程")
     }
+    
+    deinit {
+        releaseTimer()
+    }
 
     override var representedObject: Any? {
         didSet {
@@ -105,6 +114,33 @@ class ViewController: NSViewController {
     
 }
 
+
+// MARK: timer 接口
+extension ViewController {
+    private func startTimer() {
+        if isSusspended {
+            self.autoLearnTimer?.resume()
+        }
+        isSusspended = false
+    }
+
+    private func stopTimer() {
+        if isSusspended {
+            return
+        }
+        isSusspended = true
+        DispatchQueue.main.async {
+            self.autoLearnTimer?.suspend()
+        }
+        print("停止定时器")
+    }
+    private func releaseTimer() {
+        if isSusspended {
+            self.autoLearnTimer?.resume()
+        }
+        self.autoLearnTimer?.cancel()
+    }
+}
 
 // MARK: 事件
 extension ViewController {
@@ -221,10 +257,7 @@ extension ViewController {
     
     // 开始学习
     @IBAction func startToLearn(_ sender: Any) {
-        if autoLearnTimer.isCancelled {
-            print("定时器被 Cancelled")
-        }
-        autoLearnTimer.resume()
+        startTimer()
         self.LoginButton.isEnabled = false
         self.playSpeedSegment.isEnabled = false
         self.selCourseButton.isEnabled = false
@@ -232,15 +265,18 @@ extension ViewController {
         self.stopButton.isEnabled = true
         // 初始化课程章节信息, 筛选未学习课程进行自动学习
         resetNewLessonInfo()
+        
     }
     
     // 停止自动学习
     @IBAction func stopToAutoLearn(_ sender: Any) {
-        LoginButton.isEnabled = true
-        startButton.isEnabled = true
-        playSpeedSegment.isEnabled = true
-        selCourseButton.isEnabled = true
-        autoLearnTimer.suspend()
+        DispatchQueue.main.async {
+            self.LoginButton.isEnabled = true
+            self.startButton.isEnabled = true
+            self.playSpeedSegment.isEnabled = true
+            self.selCourseButton.isEnabled = true
+        }
+        self.stopTimer()
     }
     
     // 播放视频
@@ -249,8 +285,17 @@ extension ViewController {
         guard let selLesson = self.selectLesson else { return }
         guard let selChapter = self.selectChapter,
             let chapterID = selChapter["lesson_id"] as? Int else { return }
-        NetManager.shared.chapterVideoPath(course: selLesson, lessionID: chapterID) { (result, path) in
-            print("视频地址: \(path)")
+        NetManager.shared.chapterVideoPath(course: selLesson, lessionID: chapterID) { [weak self] (result, path) in
+            guard result == true, path != nil, let videoURL = URL(string: path!) else {
+                return
+            }
+            DispatchQueue.main.async {
+                let player = AVPlayerView(frame: NSRect.init(x: 0, y: 10, width: 400, height: 400))
+                player.player = AVPlayer(url: videoURL)
+                self?.view.addSubview(player)
+                player.player?.play()
+            }
+            
         }
     }
 //    func controlTextDidChange(_ obj: Notification) {
@@ -282,6 +327,7 @@ extension ViewController {
         self.lesson_id = lesson_id
         self.course_id = course_id
         self.learningChapterLabel.stringValue = currentChapter["lesson_name"] as? String ?? ""
+        
     }
     
     // 初始化一门课程信息, 已学习, 未学习等数据
@@ -308,7 +354,8 @@ extension ViewController {
             self.selCourseButton.isEnabled = true
             self.LoginButton.isEnabled = true
             self.startButton.isEnabled = true
-            self.autoLearnTimer.suspend()
+            
+            self.stopTimer()
             return
         }
         
@@ -322,16 +369,16 @@ extension ViewController {
         
         guard let currWillBeLearned = self.unLearnedLessonChapters.popLast() else {
             print("   >>>>>   设置一个未学习章节: 已经全部学习完  <<<<<   ")
-            self.learningChapterLabel.stringValue = ""
             AudioTool.sharedManager.playSystemSound()
             
             DispatchQueue.main.async {
+                self.learningChapterLabel.stringValue = ""
                 self.playSpeedSegment.isEnabled = true
                 self.selCourseButton.isEnabled = true
                 self.LoginButton.isEnabled = true
                 self.startButton.isEnabled = true
-                self.autoLearnTimer.suspend()
             }
+            self.stopTimer()
             return
         }
         print(" 切换下一章节  剩余未学习课程: [\(self.unLearnedLessonChapters.count)] ")
