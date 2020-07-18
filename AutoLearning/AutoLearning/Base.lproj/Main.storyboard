@@ -900,7 +900,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="BgC-Ig-RRV"/>
                                 </constraints>
-                                <textFieldCell key="cell" lineBreakMode="truncatingTail" borderStyle="bezel" alignment="left" title="奥德赛发送到阿斯蒂芬发送到发斯蒂芬阿斯蒂芬" bezelStyle="round" id="oWE-S4-olD">
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" borderStyle="bezel" alignment="left" title="--" bezelStyle="round" id="oWE-S4-olD">
                                     <font key="font" metaFont="message" size="11"/>
                                     <color key="textColor" name="systemBrownColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
