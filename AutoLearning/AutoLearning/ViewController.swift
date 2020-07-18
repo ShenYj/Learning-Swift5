@@ -502,4 +502,8 @@ extension ViewController: NSTableViewDelegate {
         print("\(tableColumn.dataCell)")
     }
     
+    func tableView(_ tableView: NSTableView, shouldSelect tableColumn: NSTableColumn?) -> Bool {
+        return true
+    }
+    
 }

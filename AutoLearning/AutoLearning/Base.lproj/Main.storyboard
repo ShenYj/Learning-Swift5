@@ -712,7 +712,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZO8-Bk-Tdd">
-                                <rect key="frame" x="90" y="757" width="320" height="25"/>
+                                <rect key="frame" x="87" y="757" width="346" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="nxd-qU-dKd"/>
                                 </constraints>
@@ -723,10 +723,9 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KON-eo-D42">
-                                <rect key="frame" x="18" y="758" width="64" height="22"/>
+                                <rect key="frame" x="18" y="758" width="61" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="fDs-kM-1fo"/>
-                                    <constraint firstAttribute="width" constant="60" id="fre-He-Y8i"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Token:" id="emS-4o-h2W">
                                     <font key="font" metaFont="system" size="19"/>
@@ -735,10 +734,9 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1GL-IJ-Fi0">
-                                <rect key="frame" x="420" y="753" width="60" height="32"/>
+                                <rect key="frame" x="443" y="753" width="37" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="WAK-5r-0mk"/>
-                                    <constraint firstAttribute="width" constant="60" id="u6r-as-hF5"/>
                                 </constraints>
                                 <buttonCell key="cell" type="square" title="登录" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fKW-jg-btd">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -760,7 +758,7 @@
                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="systemBrownColor" catalog="System" colorSpace="catalog"/>
                                             <size key="minSize" width="260" height="717"/>
-                                            <size key="maxSize" width="348" height="10000000"/>
+                                            <size key="maxSize" width="503" height="10000000"/>
                                             <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                         </textView>
                                     </subviews>
@@ -835,7 +833,7 @@
                                     <constraint firstAttribute="height" constant="14" id="zll-Cp-u4t"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="当前章节学习进度:" id="euW-UE-jf5">
-                                    <font key="font" metaFont="controlContent" size="11"/>
+                                    <font key="font" metaFont="message" size="11"/>
                                     <color key="textColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -843,7 +841,6 @@
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zdw-no-JnF">
                                 <rect key="frame" x="344" y="606" width="92" height="33"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="AdC-X0-epS"/>
                                     <constraint firstAttribute="height" constant="22" id="YYw-cB-1Tm"/>
                                 </constraints>
                                 <buttonCell key="cell" type="push" title="自动学习" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="9kg-Cu-N66">
@@ -857,7 +854,6 @@
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hm4-Bc-SVw">
                                 <rect key="frame" x="344" y="574" width="92" height="33"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="GQU-BL-Djy"/>
                                     <constraint firstAttribute="height" constant="22" id="VJP-9r-4pP"/>
                                 </constraints>
                                 <buttonCell key="cell" type="push" title="停止" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="bQD-Ig-Y4C">
@@ -902,13 +898,13 @@
                                     <constraint firstAttribute="height" constant="22" id="BgC-Ig-RRV"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" borderStyle="bezel" alignment="left" title="奥德赛发送到阿斯蒂芬发送到发斯蒂芬阿斯蒂芬" bezelStyle="round" id="oWE-S4-olD">
-                                    <font key="font" metaFont="controlContent" size="11"/>
+                                    <font key="font" metaFont="message" size="11"/>
                                     <color key="textColor" name="systemBrownColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fJR-gr-Lju">
-                                <rect key="frame" x="298" y="475" width="70" height="16"/>
+                                <rect key="frame" x="298" y="475" width="57" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="lpn-lW-Jzn"/>
                                 </constraints>
@@ -919,10 +915,9 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fnJ-2X-tIU">
-                                <rect key="frame" x="366" y="465" width="120" height="32"/>
+                                <rect key="frame" x="353" y="465" width="133" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Apw-BW-wNx"/>
-                                    <constraint firstAttribute="width" constant="108" id="ZC4-Df-c1E"/>
                                     <constraint firstAttribute="height" constant="21" id="zKW-Ln-3Z8"/>
                                 </constraints>
                                 <buttonCell key="cell" type="push" title="播放选中章节" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5h5-U9-yS4">
@@ -933,14 +928,14 @@
                                     <action selector="startToPlay:" target="XfG-lQ-9wD" id="bh0-kN-eRN"/>
                                 </connections>
                             </button>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDG-1H-pA3">
+                            <scrollView borderType="line" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDG-1H-pA3">
                                 <rect key="frame" x="300" y="136" width="180" height="324"/>
-                                <clipView key="contentView" id="YAO-v0-uRy">
-                                    <rect key="frame" x="1" y="0.0" width="178" height="323"/>
+                                <clipView key="contentView" drawsBackground="NO" id="YAO-v0-uRy">
+                                    <rect key="frame" x="1" y="1" width="178" height="322"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="20" headerView="qEG-X9-b22" id="4Ff-Dc-vot">
-                                            <rect key="frame" x="0.0" y="0.0" width="178" height="298"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="178" height="297"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -980,7 +975,7 @@
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="DDa-ql-ORY">
-                                    <rect key="frame" x="1" y="118" width="160" height="16"/>
+                                    <rect key="frame" x="1" y="307" width="178" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="LK6-Uc-bnF">
@@ -1026,7 +1021,7 @@
                             <constraint firstAttribute="trailing" secondItem="FES-Mu-2c9" secondAttribute="trailing" constant="20" id="cwd-4r-yHb"/>
                             <constraint firstItem="RcC-0R-WN9" firstAttribute="top" secondItem="FES-Mu-2c9" secondAttribute="bottom" constant="10" id="eAN-Ua-LT3"/>
                             <constraint firstItem="ZO8-Bk-Tdd" firstAttribute="centerY" secondItem="KON-eo-D42" secondAttribute="centerY" id="eHI-vT-tN0"/>
-                            <constraint firstItem="Hm4-Bc-SVw" firstAttribute="leading" secondItem="zdw-no-JnF" secondAttribute="leading" id="eWs-pg-KE6"/>
+                            <constraint firstItem="Hm4-Bc-SVw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zdw-no-JnF" secondAttribute="leading" id="eWs-pg-KE6"/>
                             <constraint firstItem="iwh-et-NCh" firstAttribute="leading" secondItem="ySb-30-SQw" secondAttribute="trailing" constant="20" id="fw6-ke-Iv2"/>
                             <constraint firstAttribute="trailing" secondItem="1GL-IJ-Fi0" secondAttribute="trailing" constant="20" id="gor-Jc-Phk"/>
                             <constraint firstItem="FES-Mu-2c9" firstAttribute="leading" secondItem="ySb-30-SQw" secondAttribute="trailing" constant="20" id="hSU-fe-6uv"/>
@@ -1045,6 +1040,7 @@
                             <constraint firstItem="KON-eo-D42" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="vNr-wD-y1X"/>
                             <constraint firstItem="fnJ-2X-tIU" firstAttribute="centerY" secondItem="fJR-gr-Lju" secondAttribute="centerY" id="vVO-Xs-kI2"/>
                             <constraint firstItem="JRB-aj-BoZ" firstAttribute="top" secondItem="iJG-E5-OhJ" secondAttribute="bottom" constant="10" id="vXg-XS-TgD"/>
+                            <constraint firstAttribute="trailing" secondItem="Hm4-Bc-SVw" secondAttribute="trailing" constant="70" id="wcx-S2-AiO"/>
                             <constraint firstAttribute="trailing" secondItem="cDG-1H-pA3" secondAttribute="trailing" constant="20" id="z3A-UL-fQZ"/>
                         </constraints>
                     </view>
