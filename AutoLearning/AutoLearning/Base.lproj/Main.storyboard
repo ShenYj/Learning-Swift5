@@ -747,31 +747,31 @@
                                 </connections>
                             </button>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ySb-30-SQw">
-                                <rect key="frame" x="20" y="573" width="260" height="164"/>
+                                <rect key="frame" x="20" y="582" width="260" height="155"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="eKr-EV-sBi">
-                                    <rect key="frame" x="0.0" y="0.0" width="260" height="164"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="260" height="155"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="SQ8-nN-YLc">
-                                            <rect key="frame" x="0.0" y="0.0" width="260" height="164"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="260" height="155"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="systemBrownColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="minSize" width="260" height="164"/>
+                                            <size key="minSize" width="260" height="155"/>
                                             <size key="maxSize" width="503" height="10000000"/>
                                             <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                         </textView>
                                     </subviews>
                                 </clipView>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="164" id="9RW-bY-EfW"/>
+                                    <constraint firstAttribute="height" constant="155" id="9RW-bY-EfW"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="C7U-dn-b7e">
                                     <rect key="frame" x="-100" y="-100" width="240" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="mjv-yp-veC">
-                                    <rect key="frame" x="244" y="0.0" width="16" height="164"/>
+                                    <rect key="frame" x="244" y="0.0" width="16" height="155"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
