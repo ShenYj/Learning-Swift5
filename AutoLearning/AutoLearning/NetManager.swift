@@ -167,34 +167,20 @@ extension NetManager {
     }
     
     // MARK: 获取流媒体地址
-    func chapterVideoPath( course: [String: Any], lessionID: Int, lessionDuration: Int, callback: @escaping ((_ success: Bool, _ realVideoPath: String?) -> Void) ) {
+    func chapterVideoPath( course: [String: Any], lessionID: Int, callback: @escaping ((_ success: Bool, _ realVideoPath: String?) -> Void) ) {
         let courseID: Int = course["course_id"] as! Int
-        
-        let videoUrl = "\(InterfaceLearnRecordReport)/\(courseID)\(lessionID)"
-        guard let request = requestInstance(path: videoUrl) else {
-            callback(false, nil)
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request) { ( data, urlRespone, error) in
-            guard let resData = data else {
-                callback(false, nil)
-                return
-            }
-            guard case let res as [String: Any] = try? JSONSerialization.jsonObject(with: resData, options: .mutableContainers) else {
-                callback(false, nil)
-                return;
-            }
+        let videoUrl = "\(InterfaceChapterVideoPath)/\(courseID)/\(lessionID)"
+        request(path: videoUrl) { (dataResponse, urlResponse, error) in
             
-            if let jsonData = res["data"] as? [String: Any],
-                let realPath = jsonData["url"] as? String {
-                print(" 播放地址: \(realPath)")
-                callback(false, realPath)
-                return
+            guard let data = dataResponse?["data"] as? [String: Any],
+                let realPath = data["url"] as? String,
+                let code = dataResponse?["code"] as? Int, code == 200 else {
+                    print(" 解析字段失败 ")
+                    callback(false, nil)
+                    return
             }
-            callback(false, nil)
+            callback(true, realPath)
         }
-        task.resume()
     }
 }
 
@@ -211,9 +197,9 @@ extension NetManager {
         request.addValue("https://servicewechat.com/wxf2bc5d182269cdf1/8/page-frame.html", forHTTPHeaderField: "Referer")
         request.addValue("Bearer \(InfoManager.shared.accessToken ?? "")", forHTTPHeaderField: "Authorization")
         request.addValue("Mozilla/5.0 (iPhone; CPU iPhone OS 13_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/7.0.14(0x17000e25) NetType/4G Language/zh_CN", forHTTPHeaderField: "User-Agent")
-        
-        //print("=============================== Header ================================")
-        //print("Header: \(request.allHTTPHeaderFields ?? [:]) ")
+        request.httpMethod = "GET"
+//        print("=============================== Header ================================")
+//        print("Header: \(request.allHTTPHeaderFields ?? [:]) ")
         return request
     }
     

@@ -52,6 +52,10 @@ class ViewController: NSViewController {
     @IBOutlet weak var stopButton: NSButton!
     // 正在学习中的章节名称
     @IBOutlet weak var learningChapterLabel: NSTextField!
+    // 章节列表
+    @IBOutlet weak var chaptersTableView: NSTableColumn!
+    // 播放按钮
+    @IBOutlet weak var playButton: NSButton!
     
     // MARK: 数据
     
@@ -97,6 +101,7 @@ class ViewController: NSViewController {
         // Update the view, if already loaded.
         }
     }
+    
     
 }
 
@@ -238,7 +243,16 @@ extension ViewController {
         autoLearnTimer.suspend()
     }
     
-    
+    // 播放视频
+    @IBAction func startToPlay(_ sender: Any) {
+        
+        guard let selLesson = self.selectLesson else { return }
+        guard let selChapter = self.selectChapter,
+            let chapterID = selChapter["lesson_id"] as? Int else { return }
+        NetManager.shared.chapterVideoPath(course: selLesson, lessionID: chapterID) { (result, path) in
+            print("视频地址: \(path)")
+        }
+    }
 //    func controlTextDidChange(_ obj: Notification) {
 //        guard selCourseButton.selectedTag() > -1 else {
 //            return
@@ -404,5 +418,16 @@ extension ViewController {
             extensionAttributeMsg.addAttribute(.foregroundColor, value: extensionColor, range: NSRange.init(location: 0, length: extensionAttributeMsg.length))
             self.userInfoTextView.insertText(extensionAttributeMsg, replacementRange: NSRange.init(location: userInfoAttributeString.length, length: 0))
         }
+    }
+}
+
+
+extension ViewController: NSTableViewDataSource {
+    
+    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
+        guard let chapter = self.lessonChaptersList?[row] else {
+            return nil
+        }
+        return chapter["lesson_name"]
     }
 }
