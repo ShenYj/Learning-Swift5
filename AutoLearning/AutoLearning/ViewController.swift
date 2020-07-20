@@ -101,6 +101,7 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         selCourseButton.menu = NSMenu(title: "选择课程")
+        chaptersTableView.allowsColumnSelection = true
         chaptersTableView.target = self
         chaptersTableView.doubleAction = #selector(tableViewDoubleClick(_:))
     }
@@ -322,14 +323,15 @@ extension ViewController {
         self.totaolS = totalDuration
         self.lesson_id = lesson_id
         self.course_id = course_id
-        self.learningChapterLabel.stringValue = currentChapter["lesson_name"] as? String ?? ""
         
     }
     
     // 初始化一门课程信息, 已学习, 未学习等数据
     func resetNewLessonInfo() {
         
-        self.chaptersTableView.reloadData()
+        DispatchQueue.main.async {
+            self.chaptersTableView.reloadData()
+        }
         self.selectChapter = nil
         guard let courseChapterList = self.lessonChaptersList else { return }
         let unLearned = courseChapterList.filter { (element) -> Bool in
@@ -346,7 +348,6 @@ extension ViewController {
         var unLearnedReversed = Array(unLearned.reversed())
         guard let currWillBeLearned = unLearnedReversed.popLast() else {
             print("   >>>>>  初始化课程信息: 已经全部学习完  <<<<<    ")
-            self.learningChapterLabel.stringValue = ""
             self.playSpeedSegment.isEnabled = true
             self.selCourseButton.isEnabled = true
             self.LoginButton.isEnabled = true
@@ -363,13 +364,14 @@ extension ViewController {
     
     // 设置一个未学习章节
     func changeNextChapter() -> Void {
-        self.chaptersTableView.reloadData()
+        DispatchQueue.main.async {
+            self.chaptersTableView.reloadData()
+        }
         guard let currWillBeLearned = self.unLearnedLessonChapters.popLast() else {
             print("   >>>>>   设置一个未学习章节: 已经全部学习完  <<<<<   ")
             AudioTool.sharedManager.playSystemSound()
             
             DispatchQueue.main.async {
-                self.learningChapterLabel.stringValue = ""
                 self.playSpeedSegment.isEnabled = true
                 self.selCourseButton.isEnabled = true
                 self.LoginButton.isEnabled = true
@@ -488,16 +490,28 @@ extension ViewController: NSTableViewDataSource {
     }
 }
 
-let reusedID = "reusedID"
 
 extension ViewController: NSTableViewDelegate {
     
-    
+    func selectionShouldChange(in tableView: NSTableView) -> Bool {
+        return true
+    }
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return true
     }
     
     func tableViewSelectionDidChange(_ notification: Notification) {
         print("tableViewSelectionDidChange")
+        guard let selChapterInTable = self.lessonChaptersList?[chaptersTableView.selectedRow], let chapterName = selChapterInTable["lesson_name"] as? String else { return }
+        print(chapterName)
+        self.learningChapterLabel.stringValue = chapterName
     }
+    
+//    func tableView(_ tableView: NSTableView, shouldTrackCell cell: NSCell, for tableColumn: NSTableColumn?, row: Int) -> Bool {
+//        return true
+//    }
+//
+//    func tableView(_ tableView: NSTableView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, row: Int) {
+//        print("ssss")
+//    }
 }

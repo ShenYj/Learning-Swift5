@@ -860,7 +860,7 @@
                                                         <constraint firstAttribute="height" constant="14" id="UQr-WX-Wi9"/>
                                                     </constraints>
                                                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="当前章节学习进度:" id="euW-UE-jf5">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
@@ -967,7 +967,7 @@
                                                         <constraint firstAttribute="height" constant="22" id="Btb-05-gKb"/>
                                                     </constraints>
                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" borderStyle="bezel" alignment="left" title="--" bezelStyle="round" id="oWE-S4-olD">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="systemBrownColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
@@ -989,7 +989,7 @@
                                                         <rect key="frame" x="1" y="0.0" width="282" height="199"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
-                                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowHeight="20" headerView="qEG-X9-b22" id="4Ff-Dc-vot">
+                                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="20" headerView="qEG-X9-b22" id="4Ff-Dc-vot">
                                                                 <rect key="frame" x="0.0" y="0.0" width="282" height="174"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
