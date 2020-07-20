@@ -101,6 +101,8 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         selCourseButton.menu = NSMenu(title: "选择课程")
+        chaptersTableView.target = self
+        chaptersTableView.doubleAction = #selector(tableViewDoubleClick(_:))
     }
     
     deinit {
@@ -281,31 +283,23 @@ extension ViewController {
         self.stopTimer()
     }
     
+    @objc func tableViewDoubleClick(_ sender:AnyObject) {
+     
+        print(chaptersTableView.selectedRow)
+    }
+    
     // 播放视频
-    @IBAction func startToPlay(_ sender: Any) {
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
         
-        guard let selLesson = self.selectLesson else { return }
+        guard let courseID: Int = self.selectLesson?["course_id"] as? Int else { return }
         guard let selChapter = self.selectChapter,
             let chapterID = selChapter["lesson_id"] as? Int else { return }
-        NetManager.shared.chapterVideoPath(course: selLesson, lessionID: chapterID) { [weak self] (result, path) in
-            guard result == true, path != nil, let videoURL = URL(string: path!) else {
-                return
-            }
-            DispatchQueue.main.async {
-                let player = AVPlayerView(frame: NSRect.init(x: 0, y: 10, width: 400, height: 400))
-                player.player = AVPlayer(url: videoURL)
-                self?.view.addSubview(player)
-                player.player?.play()
-            }
-            
-        }
+        
+        guard let viewPlayerController = segue.destinationController as? PlayerController else { return }
+        let videoInfo = ["chapterID": chapterID, "courseID": courseID]
+        viewPlayerController.videoInfo = videoInfo
+        
     }
-//    func controlTextDidChange(_ obj: Notification) {
-//        guard selCourseButton.selectedTag() > -1 else {
-//            return
-//        }
-//        selCourseButton.selectItem(at: -1)
-//    }
 }
 
 
@@ -498,12 +492,12 @@ let reusedID = "reusedID"
 
 extension ViewController: NSTableViewDelegate {
     
-    func tableView(_ tableView: NSTableView, didClick tableColumn: NSTableColumn) {
-        print("\(tableColumn.dataCell)")
-    }
     
-    func tableView(_ tableView: NSTableView, shouldSelect tableColumn: NSTableColumn?) -> Bool {
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return true
     }
     
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        print("tableViewSelectionDidChange")
+    }
 }

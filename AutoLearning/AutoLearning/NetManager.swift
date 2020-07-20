@@ -167,8 +167,8 @@ extension NetManager {
     }
     
     // MARK: 获取流媒体地址
-    func chapterVideoPath( course: [String: Any], lessionID: Int, callback: @escaping ((_ success: Bool, _ realVideoPath: String?) -> Void) ) {
-        let courseID: Int = course["course_id"] as! Int
+    func chapterVideoPath( courseID: Int, lessionID: Int, callback: @escaping ((_ success: Bool, _ realVideoPath: String?) -> Void) ) {
+       
         let videoUrl = "\(InterfaceChapterVideoPath)/\(courseID)/\(lessionID)"
         request(path: videoUrl) { (dataResponse, urlResponse, error) in
             

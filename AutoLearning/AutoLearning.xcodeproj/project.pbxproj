@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F7A3306A24C40F530007D7BD /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A3306924C40F530007D7BD /* PlayerController.swift */; };
 		F7AC357B24BFE1A700D9F4C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7AC357A24BFE1A700D9F4C2 /* AppDelegate.swift */; };
 		F7AC357D24BFE1A700D9F4C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7AC357C24BFE1A700D9F4C2 /* ViewController.swift */; };
 		F7AC357F24BFE1A800D9F4C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7AC357E24BFE1A800D9F4C2 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F7A3306924C40F530007D7BD /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		F7AC357724BFE1A700D9F4C2 /* AutoLearning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoLearning.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7AC357A24BFE1A700D9F4C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F7AC357C24BFE1A700D9F4C2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			children = (
 				F7AC357A24BFE1A700D9F4C2 /* AppDelegate.swift */,
 				F7AC357C24BFE1A700D9F4C2 /* ViewController.swift */,
+				F7A3306924C40F530007D7BD /* PlayerController.swift */,
 				F7AC358C24BFF0E400D9F4C2 /* NetManager.swift */,
 				F7AC358E24BFFD2700D9F4C2 /* InfoManager.swift */,
 				F7AC359024BFFD3E00D9F4C2 /* AutoTool.swift */,
@@ -144,6 +147,7 @@
 			files = (
 				F7AC357D24BFE1A700D9F4C2 /* ViewController.swift in Sources */,
 				F7AC358D24BFF0E400D9F4C2 /* NetManager.swift in Sources */,
+				F7A3306A24C40F530007D7BD /* PlayerController.swift in Sources */,
 				F7AC357B24BFE1A700D9F4C2 /* AppDelegate.swift in Sources */,
 				F7AC359124BFFD3E00D9F4C2 /* AutoTool.swift in Sources */,
 				F7AC358F24BFFD2700D9F4C2 /* InfoManager.swift in Sources */,
