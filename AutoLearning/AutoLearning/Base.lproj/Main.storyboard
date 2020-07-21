@@ -685,7 +685,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="小霸王学习机" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="609" y="322" width="350" height="440"/>
@@ -985,7 +985,7 @@
                                                 </textField>
                                                 <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDG-1H-pA3">
                                                     <rect key="frame" x="15" y="61" width="284" height="200"/>
-                                                    <clipView key="contentView" drawsBackground="NO" id="YAO-v0-uRy">
+                                                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="YAO-v0-uRy">
                                                         <rect key="frame" x="1" y="0.0" width="282" height="199"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
@@ -1028,7 +1028,6 @@
                                                                 </connections>
                                                             </tableView>
                                                         </subviews>
-                                                        <nil key="backgroundColor"/>
                                                     </clipView>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="200" id="v2f-tV-bfr"/>

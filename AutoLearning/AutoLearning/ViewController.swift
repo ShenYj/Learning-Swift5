@@ -225,7 +225,7 @@ extension ViewController {
         self.playSpeedSegment.isEnabled = true
         
         print("选择课程: [\(selLessonName)]  \(sender.indexOfSelectedItem)")
-        let selLesson: [String: Any] = self.collectLessons![sender.indexOfSelectedItem]
+        guard let selLesson: [String: Any] = self.collectLessons?[sender.indexOfSelectedItem] else { return }
         // 记录选中课程
         selectLesson = selLesson
         
@@ -287,19 +287,6 @@ extension ViewController {
     @objc func tableViewDoubleClick(_ sender:AnyObject) {
      
         print(chaptersTableView.selectedRow)
-    }
-    
-    // 播放视频
-    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        
-        guard let courseID: Int = self.selectLesson?["course_id"] as? Int else { return }
-        guard let selChapter = self.selectChapter,
-            let chapterID = selChapter["lesson_id"] as? Int else { return }
-        
-        guard let viewPlayerController = segue.destinationController as? PlayerController else { return }
-        let videoInfo = ["chapterID": chapterID, "courseID": courseID]
-        viewPlayerController.videoInfo = videoInfo
-        
     }
 }
 
@@ -503,15 +490,22 @@ extension ViewController: NSTableViewDelegate {
     func tableViewSelectionDidChange(_ notification: Notification) {
         print("tableViewSelectionDidChange")
         guard let selChapterInTable = self.lessonChaptersList?[chaptersTableView.selectedRow], let chapterName = selChapterInTable["lesson_name"] as? String else { return }
-        print(chapterName)
         self.learningChapterLabel.stringValue = chapterName
     }
     
-//    func tableView(_ tableView: NSTableView, shouldTrackCell cell: NSCell, for tableColumn: NSTableColumn?, row: Int) -> Bool {
-//        return true
-//    }
-//
-//    func tableView(_ tableView: NSTableView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, row: Int) {
-//        print("ssss")
-//    }
+}
+
+extension ViewController {
+    // 播放视频
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        
+        guard let courseID: Int = self.selectLesson?["course_id"] as? Int else { return }
+        guard let selChapter = self.lessonChaptersList?[chaptersTableView.selectedRow],
+            let chapterID = selChapter["lesson_id"] as? Int else { return }
+        
+        guard let viewPlayerController = segue.destinationController as? PlayerController else { return }
+        let videoInfo = ["chapterID": chapterID, "courseID": courseID]
+        viewPlayerController.videoInfo = videoInfo
+        
+    }
 }
