@@ -16,7 +16,8 @@ internal class NetManager {
     
     private let session: URLSession = URLSession.shared
     
-    
+    // 获取token
+    private let InterfaceGetAccessToken: String = "https://www.bjjnts.cn/api/mobile/token"
     // 登录接口
     private let InterfaceLogin: String = "https://www.bjjnts.cn/api/mobile/user/center"
     // 收藏列表接口
@@ -29,15 +30,54 @@ internal class NetManager {
     private let InterfaceChapterVideoPath: String = "https://www.bjjnts.cn/api/mobile/courses/url"
 }
 
-extension NetManager {
-    
-}
 
 extension NetManager {
     
-    // MARK: 登录
+    // MARK: 获取token
+    func getAccessToken(idNumber: String, pwd: String, callback: @escaping ((_ success: Bool) -> Void) ) -> Void {
+        
+        let bodyJson = ["username": idNumber, "password": pwd]
+        guard let body = try? JSONSerialization.data(withJSONObject: bodyJson, options: .fragmentsAllowed) else {
+            print("序列化失败")
+            return
+        }
+        post(path: InterfaceGetAccessToken, data: body) { (data, urlRespone, error) in
+            guard let resData = data else {
+                callback(false)
+                return
+            }
+            
+            print("获取token: \(resData)")
+            guard let code = resData["code"] as? Int,
+                let msg = resData["msg"] as? String,
+                let ddata = resData["data"] as? [String: Any] else {
+                    print("解析字段失败")
+                    callback(false)
+                    return
+            }
+            
+            guard code == 200, msg == "success" else {
+                print("获取token失败 \(msg)")
+                callback(false)
+                return
+            }
+            
+            guard let token = ddata["access_token"] as? String ,
+                let expiresIn = ddata["expires_in"] as? Int else {
+                    print("解析字段失败")
+                    callback(false)
+                    return
+            }
+            
+            print("过期时间: \(expiresIn)")
+            // 记录Token
+            InfoManager.shared.updateToken(newToken:token)
+            callback(true)
+        }
+    }
+    // MARK: 登录拉取用户信息
     func login(response: ((_ success: Bool) -> Void)? ) -> Void {
-        request(path: InterfaceLogin) { (dataResponse, urlResponse, error) in
+        get(path: InterfaceLogin) { (dataResponse, urlResponse, error) in
             
             guard let callback = response else {
                 return
@@ -67,7 +107,7 @@ extension NetManager {
     // MARK: 获取收藏列表
     func collectLessons(response: @escaping ((_ success: Bool, _ colletLessons: Array<Dictionary<String, Any>>?) -> Void) ) -> Void {
         
-        request(path: InterfaceCollectLessons) { (dataResponse, urlResponse, error) in
+        get(path: InterfaceCollectLessons) { (dataResponse, urlResponse, error) in
             
             guard let resCode = dataResponse?["code"] as? Int,
                 let data = dataResponse?["data"] as? Array<[String: Any]>,
@@ -97,7 +137,7 @@ extension NetManager {
         let courseID: Int = course["course_id"] as! Int
         let path = "\(InterfaceLessonList)/\(courseID)?course_id=\(courseID)"
         print(" ==> 获取 [\(String(describing: name))] 课程章节列表: [\(path)]")
-        request(path: path) { (dataResponse, urlResponse, error) in
+        get(path: path) { (dataResponse, urlResponse, error) in
             
             guard let resCode = dataResponse?["code"] as? Int,
                 let data = dataResponse?["data"] as? [String: Any],
@@ -139,21 +179,17 @@ extension NetManager {
         list.append("learn_duration=\(lessionDuration)")
         let stringBody: String = list.joined(separator: "&")
         
-        request.httpBody = stringBody.data(using: .utf8)
-        let task = URLSession.shared.dataTask(with: request) { ( data, urlRespone, error) in
+        
+        
+        post(path: InterfaceLearnRecordReport, data: stringBody.data(using: .utf8)) { (data, urlRespone, error) in
             guard let resData = data else {
                 callback(false)
                 return
             }
-            guard case let res as [String: Any] = try? JSONSerialization.jsonObject(with: resData, options: .mutableContainers) else {
+            guard let message = resData["msg"] else {
+                print("解析字段失败")
                 callback(false)
-                return;
-            }
-            
-            guard let message = res["msg"] else {
-                    print("解析字段失败")
-                    callback(false)
-                    return
+                return
             }
             
             if message as! String == "添加成功" {
@@ -163,14 +199,14 @@ extension NetManager {
             print("上报结果: \(message)")
             callback(false)
         }
-        task.resume()
+        
     }
     
     // MARK: 获取流媒体地址
     func chapterVideoPath( courseID: Int, lessionID: Int, callback: @escaping ((_ success: Bool, _ realVideoPath: String?) -> Void) ) {
-       
+        
         let videoUrl = "\(InterfaceChapterVideoPath)/\(courseID)/\(lessionID)"
-        request(path: videoUrl) { (dataResponse, urlResponse, error) in
+        get(path: videoUrl) { (dataResponse, urlResponse, error) in
             
             guard let data = dataResponse?["data"] as? [String: Any],
                 let realPath = data["url"] as? String,
@@ -184,6 +220,8 @@ extension NetManager {
     }
 }
 
+
+
 extension NetManager {
     
     // 实例化request
@@ -195,20 +233,49 @@ extension NetManager {
         var request = URLRequest.init(url: url!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: timeoutInterval)
         request.addValue("www.bjjnts.cn", forHTTPHeaderField: "Host")
         request.addValue("https://servicewechat.com/wxf2bc5d182269cdf1/8/page-frame.html", forHTTPHeaderField: "Referer")
-        request.addValue("Bearer \(InfoManager.shared.accessToken ?? "")", forHTTPHeaderField: "Authorization")
         request.addValue("Mozilla/5.0 (iPhone; CPU iPhone OS 13_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/7.0.14(0x17000e25) NetType/4G Language/zh_CN", forHTTPHeaderField: "User-Agent")
-        request.httpMethod = "GET"
+//        request.addValue("Bearer \(InfoManager.shared.accessToken ?? "")", forHTTPHeaderField: "Authorization")
 //        print("=============================== Header ================================")
 //        print("Header: \(request.allHTTPHeaderFields ?? [:]) ")
         return request
     }
     
     // 请求公共处理 (GET请求)
-    private func request( path: String, completionHandler: @escaping (([String: Any]?, URLResponse?, Error?) -> Void) ) -> Void {
-        guard let request = requestInstance(path: path) else {
+    private func get( path: String, completionHandler: @escaping (([String: Any]?, URLResponse?, Error?) -> Void) ) -> Void {
+        guard var request = requestInstance(path: path) else {
             completionHandler(nil, nil, nil)
             return
         }
+        request.httpMethod = "GET"
+        request.addValue("Bearer \(InfoManager.shared.accessToken ?? "")", forHTTPHeaderField: "Authorization")
+        let task = URLSession.shared.dataTask(with: request) { ( data, urlRespone, error) in
+            
+            guard let resData = data else {
+                completionHandler(nil, urlRespone, error)
+                return
+            }
+            guard case let res as [String: Any] = try? JSONSerialization.jsonObject(with: resData, options: .mutableContainers) else {
+                completionHandler(nil, urlRespone, error)
+                return;
+            }
+            completionHandler(res, urlRespone, error)
+        }
+        task.resume()
+    }
+    // 请求公共处理 (POST请求)
+    private func post( path: String, data: Data? = nil, completionHandler: @escaping (([String: Any]?, URLResponse?, Error?) -> Void) ) -> Void {
+        
+        guard var request = requestInstance(path: path) else {
+            completionHandler(nil, nil, nil)
+            return
+        }
+        
+        if InfoManager.shared.accessToken != nil {
+            request.addValue("Bearer \(InfoManager.shared.accessToken ?? "")", forHTTPHeaderField: "Authorization")
+        }
+        request.httpMethod = "POST"
+        request.httpBody = data
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let task = URLSession.shared.dataTask(with: request) { ( data, urlRespone, error) in
             
@@ -216,16 +283,13 @@ extension NetManager {
                 completionHandler(nil, urlRespone, error)
                 return
             }
-            //print("=============================== 开始解析返回值 ================================")
             guard case let res as [String: Any] = try? JSONSerialization.jsonObject(with: resData, options: .mutableContainers) else {
                 completionHandler(nil, urlRespone, error)
                 return;
             }
-            // print("原始返回数据: \(res)")
             completionHandler(res, urlRespone, error)
         }
         task.resume()
     }
-    
 }
 

@@ -27,6 +27,9 @@ internal class InfoManager {
             return Double(offsetSec)
         }
     }
+    
+    
+    
     // 收藏课程数量
     internal var collectLessonCount: Int = 0
     // 收藏课程数量
@@ -37,6 +40,8 @@ internal class InfoManager {
     internal var userIDName: String?
     // rid
     internal var userID: Int?
+    
+    
     
     // MARK: 私有属性
     

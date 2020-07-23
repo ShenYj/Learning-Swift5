@@ -32,13 +32,15 @@ class ViewController: NSViewController {
     }()
     
     // MARK: 控件
-
+    
     // 本门课程的学习进度
     @IBOutlet weak var learningLessonProgressIndicator: NSProgressIndicator!
     // 当前章节学习进度
     @IBOutlet weak var learningProgressIndicator: NSProgressIndicator!
-    // token输入框
-    @IBOutlet weak var inputTokenTextField: NSTextField!
+    // 身份证输入框
+    @IBOutlet weak var inputIDNumTextField: NSTextField!
+    // 密码输入框
+    @IBOutlet weak var inpuPWDTextField: NSSecureTextField!
     // 登录按钮
     @IBOutlet weak var LoginButton: NSButton!
     // log输出框
@@ -109,10 +111,10 @@ class ViewController: NSViewController {
     deinit {
         releaseTimer()
     }
-
+    
     override var representedObject: Any? {
         didSet {
-        // Update the view, if already loaded.
+            // Update the view, if already loaded.
         }
     }
     
@@ -128,7 +130,7 @@ extension ViewController {
         }
         isSusspended = false
     }
-
+    
     private func stopTimer() {
         if isSusspended {
             return
@@ -151,39 +153,56 @@ extension ViewController {
 extension ViewController {
     /// 登录事件
     @IBAction func loginFunc(_ sender: Any) {
-
-        guard !inputTokenTextField.stringValue.isEmpty else {
-            print("请填写token")
-            updateShowMessage(extensionMsg: "请填写 token !", extensionColor: NSColor.red)
+        
+        guard !inputIDNumTextField.stringValue.isEmpty else {
+            print("请填写身份证号")
+            updateShowMessage(extensionMsg: "请填写身份证号 !", extensionColor: NSColor.red)
             return
         }
-        // 记录Token
-        InfoManager.shared.updateToken(newToken:inputTokenTextField.stringValue)
-        // 登录
-        NetManager.shared.login { [weak self] (loginSuccess) in
-            if loginSuccess {
-                print("登录成功")
-                let showMessage = InfoManager.shared.showUserInfo()
-                
-                let attributeString = NSMutableAttributedString(string: showMessage)
-                attributeString.addAttribute(.foregroundColor, value: NSColor.purple, range: NSRange.init(location: 0, length: attributeString.length))
-                
-                // 拉取收藏列表
-                self?.getCollectLessons()
-                
-                self?.userInformation = InfoManager.shared.showUserInfo()
-                self?.updateShowMessage(extensionMsg: nil)
+        guard !inpuPWDTextField.stringValue.isEmpty else {
+            print("请填写密码")
+            updateShowMessage(extensionMsg: "请填写身份证号 !", extensionColor: NSColor.red)
+            return
+        }
+        
+        NetManager.shared.getAccessToken(idNumber: inputIDNumTextField.stringValue, pwd: inpuPWDTextField.stringValue) { [weak self]  (result) in
+            
+            
+            if (result) {
+                // 获取账号信息
+                NetManager.shared.login { (loginSuccess) in
+                    if loginSuccess {
+                        print("登录成功")
+                        DispatchQueue.main.async {                        
+                            self?.inputIDNumTextField.stringValue = ""
+                            self?.inpuPWDTextField.stringValue = ""
+                        }
+                        let showMessage = InfoManager.shared.showUserInfo()
+                        
+                        let attributeString = NSMutableAttributedString(string: showMessage)
+                        attributeString.addAttribute(.foregroundColor, value: NSColor.purple, range: NSRange.init(location: 0, length: attributeString.length))
+                        
+                        // 拉取收藏列表
+                        self?.getCollectLessons()
+                        
+                        self?.userInformation = InfoManager.shared.showUserInfo()
+                        self?.updateShowMessage(extensionMsg: nil)
+                    }
+                    else {
+                        print("登录失败")
+                        // 展示账号信息
+                        OperationQueue.main.addOperation {
+                            self?.userInfoTextView.string.removeAll()
+                            let attributeString = NSMutableAttributedString(string: "登录失败!")
+                            attributeString.addAttribute(.foregroundColor, value: NSColor.red, range: NSRange.init(location: 0, length: attributeString.length))
+                            self?.userInfoTextView.insertText(attributeString, replacementRange: NSRange.init(location: 0, length: 0))
+                            self?.userInformation = nil
+                        }
+                    }
+                }
             }
             else {
-                print("登录失败")
-                // 展示账号信息
-                OperationQueue.main.addOperation {
-                    self?.userInfoTextView.string.removeAll()
-                    let attributeString = NSMutableAttributedString(string: "登录失败!")
-                    attributeString.addAttribute(.foregroundColor, value: NSColor.red, range: NSRange.init(location: 0, length: attributeString.length))
-                    self?.userInfoTextView.insertText(attributeString, replacementRange: NSRange.init(location: 0, length: 0))
-                    self?.userInformation = nil
-                }
+                self?.updateShowMessage(extensionMsg: "获取Token失败 !", extensionColor: NSColor.red)
             }
         }
     }
@@ -198,7 +217,7 @@ extension ViewController {
                 self?.collectLessons = collectLesson
                 var lessonNameArr: Array<String> = []
                 for element in collectLessons {
- 
+                    
                     if let courseName = element["course_name"], ((courseName as? String) != nil) {
                         lessonNameArr.append(courseName as! String)
                     }
@@ -285,7 +304,7 @@ extension ViewController {
     }
     
     @objc func tableViewDoubleClick(_ sender:AnyObject) {
-     
+        
         print(chaptersTableView.selectedRow)
     }
 }
@@ -417,7 +436,7 @@ extension ViewController {
                 self?.totaolS = 0
                 return
             }
-
+            
             sec += 60
             if sec > total {
                 sec = total
