@@ -57,7 +57,8 @@ class ViewController: NSViewController {
     @IBOutlet weak var learningChapterLabel: NSTextField!
     // 章节列表
     @IBOutlet weak var chaptersTableView: NSTableView!
-    
+    // 设置选中章节用来播放
+    @IBOutlet weak var switchChapterPopup: NSPopUpButton!
     
     // 播放按钮
     @IBOutlet weak var playButton: NSButton!
@@ -103,6 +104,7 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         selCourseButton.menu = NSMenu(title: "选择课程")
+        switchChapterPopup.menu = NSMenu(title: "选择播放章节")
         chaptersTableView.allowsColumnSelection = true
         chaptersTableView.target = self
         chaptersTableView.doubleAction = #selector(tableViewDoubleClick(_:))
@@ -221,19 +223,22 @@ extension ViewController {
                     if let courseName = element["course_name"], ((courseName as? String) != nil) {
                         lessonNameArr.append(courseName as! String)
                     }
+                    // 刷题用
                     self?.selCourseButton.addItems(withTitles: lessonNameArr)
                     self?.selCourseButton.selectItem(at: -1)
+                    
                     self?.selectLesson = nil
                 }
             }
         }
     }
     
-    // 切换课程
+    // 切换课程 - 自动刷题用
     @IBAction func changeSelLesson(_ sender: NSPopUpButton) {
         
         guard let selLessonName = sender.selectedItem?.title else {
             self.selCourseButton.selectItem(at: -1)
+            self.switchChapterPopup.selectItem(at: -1)
             self.selectLesson = nil
             return
         }
@@ -252,13 +257,35 @@ extension ViewController {
             guard let lessons = lessonList else {
                 return
             }
+            
             DispatchQueue.main.async {
                 self?.startButton.isEnabled = true
                 self?.LoginButton.isEnabled = true
                 self?.lessonChaptersList = lessons
                 self?.resetNewLessonInfo()
+                
+                
+                // 播放用
+                var chapterNames: Array<String> = []
+                for element in lessons {
+                    
+                    if let chapterName = element["lesson_name"], ((chapterName as? String) != nil) {
+                        chapterNames.append(chapterName as! String)
+                    }
+                    // 刷题用
+                    self?.switchChapterPopup.addItems(withTitles: chapterNames)
+                    self?.switchChapterPopup.selectItem(at: -1)
+                }
             }
         }
+    }
+    // 切换课程 - 播放视频用
+    @IBAction func changeLessonForVideoPlayer(_ sender: NSPopUpButton) {
+        guard let selLessonName = sender.selectedItem?.title else {
+            self.switchChapterPopup.selectItem(at: -1)
+            return
+        }
+        self.learningChapterLabel.stringValue = selLessonName
     }
     
     // 切换倍速
@@ -519,12 +546,19 @@ extension ViewController {
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
         
         guard let courseID: Int = self.selectLesson?["course_id"] as? Int else { return }
-        guard let selChapter = self.lessonChaptersList?[chaptersTableView.selectedRow],
-            let chapterID = selChapter["lesson_id"] as? Int else { return }
         
+        guard let selChapter = self.lessonChaptersList?[self.switchChapterPopup.indexOfSelectedItem],
+        let chapterID = selChapter["lesson_id"] as? Int else { return }
         guard let viewPlayerController = segue.destinationController as? PlayerController else { return }
         let videoInfo = ["chapterID": chapterID, "courseID": courseID]
         viewPlayerController.videoInfo = videoInfo
+        
+//        guard let selChapter = self.lessonChaptersList?[chaptersTableView.selectedRow],
+//            let chapterID = selChapter["lesson_id"] as? Int else { return }
+//
+//        guard let viewPlayerController = segue.destinationController as? PlayerController else { return }
+//        let videoInfo = ["chapterID": chapterID, "courseID": courseID]
+//        viewPlayerController.videoInfo = videoInfo
         
     }
 }
