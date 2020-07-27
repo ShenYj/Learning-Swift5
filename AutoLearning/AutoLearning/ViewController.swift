@@ -267,6 +267,7 @@ extension ViewController {
                 
                 // 播放用
                 var chapterNames: Array<String> = []
+                self?.switchChapterPopup.removeAllItems()
                 for element in lessons {
                     
                     if let chapterName = element["lesson_name"], ((chapterName as? String) != nil) {
