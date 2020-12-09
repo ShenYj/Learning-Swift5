@@ -1,0 +1,43 @@
+source 'https://cdn.cocoapods.org/'
+platform :osx, '11.0'
+inhibit_all_warnings!
+
+def testing_pods
+  pod 'Nimble', '~> 8.1.1'
+  pod 'Quick', '~> 3.0.0'
+  pod 'XcodeCoverage', '~> 1.4.0'
+end
+
+def libs_pods
+  pod 'SnapKit', '~> 5.0.1'
+  pod 'Alamofire', '~> 5.2.2'
+  pod 'Moya', '~> 14.0.0'
+  pod 'SwiftyJSON', '~> 5.0.0'
+  pod 'ObjectMapper', '~> 4.2.0'
+  pod 'SwifterSwift', '~> 5.2.0'
+  pod 'SwiftyUserDefaults', '~> 5.0.0'
+  pod 'Hue', '~> 5.0.0'
+  pod 'SwiftDate', '~> 6.1.0'
+  pod 'CryptoSwift', '~> 1.3.1'
+  pod 'Dollar', '~> 9.0.0'
+  pod 'Kingfisher', '~> 5.14.1'
+end
+
+def widgets_pods
+  
+end
+
+def tools_pods
+  pod 'XCGLogger', '~> 7.0.1', :configurations => ['Debug']
+end
+
+target 'AutoLearning' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for AutoLearning
+  libs_pods
+  widgets_pods
+  tools_pods
+  
+end
