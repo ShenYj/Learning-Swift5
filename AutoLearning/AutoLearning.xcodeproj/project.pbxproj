@@ -12,9 +12,6 @@
 		F7AC357D24BFE1A700D9F4C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7AC357C24BFE1A700D9F4C2 /* ViewController.swift */; };
 		F7AC357F24BFE1A800D9F4C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7AC357E24BFE1A800D9F4C2 /* Assets.xcassets */; };
 		F7AC358224BFE1A800D9F4C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7AC358024BFE1A800D9F4C2 /* Main.storyboard */; };
-		F7AC358D24BFF0E400D9F4C2 /* NetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7AC358C24BFF0E400D9F4C2 /* NetManager.swift */; };
-		F7AC358F24BFFD2700D9F4C2 /* InfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7AC358E24BFFD2700D9F4C2 /* InfoManager.swift */; };
-		F7AC359124BFFD3E00D9F4C2 /* AutoTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7AC359024BFFD3E00D9F4C2 /* AutoTool.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,9 +25,6 @@
 		F7AC358124BFE1A800D9F4C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F7AC358324BFE1A800D9F4C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7AC358424BFE1A800D9F4C2 /* AutoLearning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AutoLearning.entitlements; sourceTree = "<group>"; };
-		F7AC358C24BFF0E400D9F4C2 /* NetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetManager.swift; sourceTree = "<group>"; };
-		F7AC358E24BFFD2700D9F4C2 /* InfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoManager.swift; sourceTree = "<group>"; };
-		F7AC359024BFFD3E00D9F4C2 /* AutoTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTool.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,9 +79,6 @@
 			children = (
 				F7AC357A24BFE1A700D9F4C2 /* AppDelegate.swift */,
 				F7AC357C24BFE1A700D9F4C2 /* ViewController.swift */,
-				F7AC358C24BFF0E400D9F4C2 /* NetManager.swift */,
-				F7AC358E24BFFD2700D9F4C2 /* InfoManager.swift */,
-				F7AC359024BFFD3E00D9F4C2 /* AutoTool.swift */,
 				F7AC357E24BFE1A800D9F4C2 /* Assets.xcassets */,
 				F7AC358024BFE1A800D9F4C2 /* Main.storyboard */,
 				F7AC358324BFE1A800D9F4C2 /* Info.plist */,
@@ -211,10 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7AC357D24BFE1A700D9F4C2 /* ViewController.swift in Sources */,
-				F7AC358D24BFF0E400D9F4C2 /* NetManager.swift in Sources */,
 				F7AC357B24BFE1A700D9F4C2 /* AppDelegate.swift in Sources */,
-				F7AC359124BFFD3E00D9F4C2 /* AutoTool.swift in Sources */,
-				F7AC358F24BFFD2700D9F4C2 /* InfoManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
